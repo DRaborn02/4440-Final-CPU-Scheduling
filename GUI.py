@@ -1,5 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
+from Process import Process
+from Algorithms.Priority_Scheduling import priority_scheduling
 
 # Create the main application window
 root = tk.Tk()
@@ -42,11 +44,29 @@ def remove_process():
 
 # Add a button to submit the data
 def submit_process():
+    processes = []
     for i, (process_number_label, arrival_time_entry, burst_time_entry, priority_entry) in enumerate(process_rows, start=1):
-        arrival_time = arrival_time_entry.get()
-        burst_time = burst_time_entry.get()
-        priority = priority_entry.get()
-        print(f"Process {i} - Arrival Time: {arrival_time}, Burst Time: {burst_time}, Priority: {priority}")
+        try:
+            # Collect data from the text boxes
+            arrival_time = int(arrival_time_entry.get())
+            burst_time = int(burst_time_entry.get())
+            priority = int(priority_entry.get())
+            
+            # Create a Process object
+            process = Process(pid=i, arrival_time=arrival_time, burst_time=burst_time, priority=priority)
+            processes.append(process)
+        except ValueError:
+            print(f"Invalid input for Process {i}. Please enter valid integers.")
+            return
+        
+    # Run the priority scheduling algorithm
+    priority_completed_processes = priority_scheduling(processes)
+    
+    # Display the results in the console
+    print("PID\tArrival\tBurst\tPriority\tStart\tCompletion\tTAT\tWaiting")
+    for p in priority_completed_processes:
+        print(f"{p.pid}\t{p.arrival_time}\t{p.burst_time}\t{p.priority}\t\t{p.start_time}\t{p.completion_time}\t\t{p.turn_around_time}\t{p.waiting_time}")
+
 
 submit_button = ttk.Button(root, text="Submit", command=submit_process)
 submit_button.grid(row=0, column=4, padx=10, pady=5)
