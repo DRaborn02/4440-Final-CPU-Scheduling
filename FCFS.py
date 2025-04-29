@@ -1,8 +1,8 @@
-from Process import Process  # Import the Process class 
+from Process import Process  
 
 # First-Come First-Serve (FCFS) scheduling algorithm
 def fcfs(processes):
-    # Sort processes by arrival time (earliest process first)
+    # Sort processes by arrival time/ early goes first
     processes.sort(key=lambda p: p.arrival_time)
     
     current_time = 0  # Tracks current time in the simulation
@@ -15,10 +15,10 @@ def fcfs(processes):
         # Completion time = start time + how long it runs
         p.completion_time = p.start_time + p.burst_time
         
-        # Turnaround = time from arrival to completion
+        # Turnaround = time from arrival to complete
         p.turn_around_time = p.completion_time - p.arrival_time
         
-        # Waiting = turnaround time - how long it ran
+        # Waiting = turnaround time/ how long it ran
         p.waiting_time = p.turn_around_time - p.burst_time
         
         # Move current time forward to the end of this process
@@ -29,9 +29,9 @@ def fcfs(processes):
 
     return completed_processes
 
-# Example test run of FCFS
+#  FCFS run
 if __name__ == "__main__":
-    # Create example list of processes (same as your teammates are using)
+    #  list of processes 
     processes = [
         Process(pid=1, arrival_time=0, burst_time=8, priority=2),
         Process(pid=2, arrival_time=1, burst_time=4, priority=1),
