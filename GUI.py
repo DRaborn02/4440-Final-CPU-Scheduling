@@ -6,29 +6,65 @@ from Algorithms.Priority_Scheduling import priority_scheduling
 # Create the main application window
 root = tk.Tk()
 root.title("Process Input")
+root.minsize(width=575, height=400)
+root.maxsize(width=575, height=1000)
+
+# Configure the root window to allow dynamic resizing
+root.grid_rowconfigure(0, weight=1)
+root.grid_columnconfigure(0, weight=1)
+
+# Create a frame to hold the canvas and scrollbar
+main_frame = tk.Frame(root)
+main_frame.grid(row=0, column=0, sticky="nsew")
+
+# Create a canvas for scrolling
+canvas = tk.Canvas(main_frame)
+canvas.grid(row=0, column=0, sticky="nsew")
+
+# Add a vertical scrollbar to the canvas
+scrollbar = ttk.Scrollbar(main_frame, orient="vertical", command=canvas.yview)
+scrollbar.grid(row=0, column=1, sticky="ns")
+
+# Configure the canvas to work with the scrollbar
+canvas.configure(yscrollcommand=scrollbar.set)
+
+# Create a frame inside the canvas to hold the process rows
+process_frame = tk.Frame(canvas)
+canvas.create_window((0, 0), window=process_frame, anchor="nw")
+
+# Configure the main frame to allow dynamic resizing
+main_frame.grid_rowconfigure(0, weight=1)
+main_frame.grid_columnconfigure(0, weight=1)
+
+# Function to update the scroll region dynamically
+def update_scroll_region(event=None):
+    canvas.configure(scrollregion=canvas.bbox("all"))
+
+# Bind the resizing event to update the scroll region
+process_frame.bind("<Configure>", update_scroll_region)
 
 # Create a header row
-tk.Label(root, text="Process Number").grid(row=1, column=0, padx=10, pady=5)
-tk.Label(root, text="Arrival Time").grid(row=1, column=1, padx=10, pady=5)
-tk.Label(root, text="Burst Time").grid(row=1, column=2, padx=10, pady=5)
-tk.Label(root, text="Priority").grid(row=1, column=3, padx=10, pady=5)
+tk.Label(process_frame, text="Process Number").grid(row=0, column=0, padx=10, pady=5)
+tk.Label(process_frame, text="Arrival Time").grid(row=0, column=1, padx=10, pady=5)
+tk.Label(process_frame, text="Burst Time").grid(row=0, column=2, padx=10, pady=5)
+tk.Label(process_frame, text="Priority").grid(row=0, column=3, padx=10, pady=5)
 
 # List to keep track of process rows
 process_rows = []
 
 # Function to add a new process row
 def add_process():
-    row = len(process_rows) + 3
-    process_number_label = tk.Label(root, text=str(row-2))
+    row = len(process_rows) + 1
+    process_number_label = tk.Label(process_frame, text=str(row))
     process_number_label.grid(row=row, column=0, padx=10, pady=5)
     
-    arrival_time_entry = ttk.Entry(root)
+    arrival_time_entry = ttk.Entry(process_frame)
     arrival_time_entry.grid(row=row, column=1, padx=10, pady=5)
     
-    burst_time_entry = ttk.Entry(root)
+    burst_time_entry = ttk.Entry(process_frame)
     burst_time_entry.grid(row=row, column=2, padx=10, pady=5)
     
-    priority_entry = ttk.Entry(root)
+    priority_entry = ttk.Entry(process_frame)
     priority_entry.grid(row=row, column=3, padx=10, pady=5)
     
     process_rows.append((process_number_label, arrival_time_entry, burst_time_entry, priority_entry))
@@ -58,7 +94,7 @@ def submit_process():
         except ValueError:
             print(f"Invalid input for Process {i}. Please enter valid integers.")
             return
-        
+    
     # Run the priority scheduling algorithm
     priority_completed_processes = priority_scheduling(processes)
     
@@ -67,16 +103,15 @@ def submit_process():
     for p in priority_completed_processes:
         print(f"{p.pid}\t{p.arrival_time}\t{p.burst_time}\t{p.priority}\t\t{p.start_time}\t{p.completion_time}\t\t{p.turn_around_time}\t{p.waiting_time}")
 
-
 submit_button = ttk.Button(root, text="Submit", command=submit_process)
-submit_button.grid(row=0, column=4, padx=10, pady=5)
+submit_button.grid(row=1, column=0, padx=10, pady=5)
 
 # Add buttons to add and remove processes
 add_button = ttk.Button(root, text="Add Process", command=add_process)
-add_button.grid(row=0, column=0, columnspan=2, pady=10)
+add_button.grid(row=2, column=0, padx=10, pady=5)
 
 remove_button = ttk.Button(root, text="Remove Process", command=remove_process)
-remove_button.grid(row=0, column=2, columnspan=2, pady=10)
+remove_button.grid(row=3, column=0, padx=10, pady=5)
 
 # Add the first process row by default
 add_process()
