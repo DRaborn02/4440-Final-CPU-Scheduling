@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from Process import Process
 from Algorithms.Priority_Scheduling import priority_scheduling
+from Algorithms.Shortes_Job_First import shortest_job_first
 
 # Create the main application window
 root = tk.Tk()
@@ -95,23 +96,36 @@ def submit_process():
             print(f"Invalid input for Process {i}. Please enter valid integers.")
             return
     
+    priority_processes = processes.copy()
+    SJF_processes = processes.copy()
+
     # Run the priority scheduling algorithm
-    priority_completed_processes = priority_scheduling(processes)
+    priority_completed_processes = priority_scheduling(priority_processes)
     
     # Display the results in the console
     print("PID\tArrival\tBurst\tPriority\tStart\tCompletion\tTAT\tWaiting")
     for p in priority_completed_processes:
         print(f"{p.pid}\t{p.arrival_time}\t{p.burst_time}\t{p.priority}\t\t{p.start_time}\t{p.completion_time}\t\t{p.turn_around_time}\t{p.waiting_time}")
+    
+    # Run the SJF algorithm
+    SJF_completed_processes = shortest_job_first(SJF_processes)
+    
+    # Display the results in the console
+    print("PID\tArrival\tBurst\tPriority\tStart\tCompletion\tTAT\tWaiting")
+    for p in SJF_completed_processes:
+        print(f"{p.pid}\t{p.arrival_time}\t{p.burst_time}\t{p.priority}\t\t{p.start_time}\t{p.completion_time}\t\t{p.turn_around_time}\t{p.waiting_time}")
 
-submit_button = ttk.Button(root, text="Submit", command=submit_process)
-submit_button.grid(row=1, column=0, padx=10, pady=5)
 
-# Add buttons to add and remove processes
+# Add buttons to add, remove, and submit processes
 add_button = ttk.Button(root, text="Add Process", command=add_process)
-add_button.grid(row=2, column=0, padx=10, pady=5)
+add_button.grid(row=1, column=0, padx=10, pady=5)
 
 remove_button = ttk.Button(root, text="Remove Process", command=remove_process)
-remove_button.grid(row=3, column=0, padx=10, pady=5)
+remove_button.grid(row=2, column=0, padx=10, pady=5)
+
+submit_button = ttk.Button(root, text="Submit", command=submit_process)
+submit_button.grid(row=3, column=0, padx=10, pady=5)
+
 
 # Add the first process row by default
 add_process()
