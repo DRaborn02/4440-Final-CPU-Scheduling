@@ -1,8 +1,5 @@
 from collections import deque
 
-from babel.dates import time_
-from sympy.physics.units import current
-
 from Process import Process
 
 
@@ -39,17 +36,9 @@ def round_robin(processes, quantum):
                 top_process.turn_around_time = top_process.completion_time - top_process.arrival_time
                 top_process.waiting_time = top_process.turn_around_time - top_process.burst_time
         else:
-            time_taken = processes[arrival_idx].arrival_time;
-#testing
-process1 = Process(1,0,5,0)
-process2 = Process(2,4,2,0)
-process3 = Process(3,5,4,0)
-processes = [process1,process2,process3]
-round_robin(processes,2)
-for process in processes:
-    print(process.completion_time)
-    print(process.turn_around_time)
-    print(process.waiting_time)
+            time_taken = processes[arrival_idx].arrival_time
+
+    return processes
 
 
 
