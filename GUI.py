@@ -130,8 +130,14 @@ def submit_process():
         # Display the results in the console
         print(f"\n{name} Results:")
         print("PID\tArrival\tBurst\tPriority\tStart\tCompletion\tTAT\tWaiting")
+        total_waiting_time = 0
         for p in completed_processes:
             print(f"{p.pid}\t{p.arrival_time}\t{p.burst_time}\t{p.priority}\t\t{p.start_time}\t{p.completion_time}\t\t{p.turn_around_time}\t{p.waiting_time}")
+            total_waiting_time += p.waiting_time
+        
+        # Calculate and display the average waiting time
+        avg_waiting_time = total_waiting_time / len(completed_processes) if completed_processes else 0
+        print(f"Average Waiting Time: {avg_waiting_time:.2f}")
 
     # Generate all Gantt charts in a single window
     generate_all_gantt_charts(results)
