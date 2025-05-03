@@ -8,6 +8,9 @@ from Algorithms.FCFS import fcfs
 from Algorithms.shortest_job_remaining import sjrf
 from Algorithms.Round_Robin import round_robin
 
+from GanttCharts import create_gantt_chart
+from GanttCharts import generate_all_gantt_charts
+
 # Create the main application window
 root = tk.Tk()
 root.title("Process Input")
@@ -99,7 +102,7 @@ def submit_process():
         except ValueError:
             print(f"Invalid input for Process {i}. Please enter valid integers.")
             return
-    
+
     # Get the quantum value from the entry box
     try:
         quantum = int(quantum_entry.get())
@@ -107,7 +110,7 @@ def submit_process():
         print("Invalid input for Time Quantum. Please enter a valid integer.")
         return
 
-    # Run and display results for each algorithm
+    # Define the algorithms
     algorithms = {
         "Priority Scheduling": priority_scheduling,
         "Shortest Job First (SJF)": shortest_job_first,
@@ -116,16 +119,22 @@ def submit_process():
         "Round Robin": lambda processes: round_robin(processes, quantum)  # Pass quantum to Round Robin
     }
 
+    # Collect results for all algorithms
+    results = {}
     for name, algorithm in algorithms.items():
         # Make a copy of the processes for each algorithm
         algorithm_processes = [Process(p.pid, p.arrival_time, p.burst_time, p.priority) for p in processes]
         completed_processes = algorithm(algorithm_processes)
-        
+        results[name] = completed_processes
+
         # Display the results in the console
         print(f"\n{name} Results:")
         print("PID\tArrival\tBurst\tPriority\tStart\tCompletion\tTAT\tWaiting")
         for p in completed_processes:
             print(f"{p.pid}\t{p.arrival_time}\t{p.burst_time}\t{p.priority}\t\t{p.start_time}\t{p.completion_time}\t\t{p.turn_around_time}\t{p.waiting_time}")
+
+    # Generate all Gantt charts in a single window
+    generate_all_gantt_charts(results)
 
 
 # Add buttons and quantum input below the scrollable section

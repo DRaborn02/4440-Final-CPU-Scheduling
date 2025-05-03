@@ -20,6 +20,7 @@ def round_robin(processes, quantum):
         if len(queue) > 0:
             top_process = queue.popleft()
             exec_time = min(quantum, top_process.remain_time)
+            top_process.execution_slices.append((time_taken, exec_time))  # Record the time slice
             top_process.remain_time -= exec_time
             time_taken += exec_time
             # check again if any process arrive yet
