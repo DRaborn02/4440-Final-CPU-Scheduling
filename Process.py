@@ -9,3 +9,4 @@ class Process:
         self.completion_time = 0
         self.turn_around_time = 0
         self.waiting_time = 0
+        self.execution_slices = [] 
