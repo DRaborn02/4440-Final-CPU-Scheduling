@@ -129,8 +129,8 @@ def generate_all_gantt_charts(results):
         ax.grid(axis='x', linestyle='--', alpha=0.7)
 
         # Remove x-axis ticks and labels
-        ax.set_xticks([])
+        #ax.set_xticks([])
 
     plt.tight_layout(rect=[0, 0, 1, 0.95])  # Adjust layout for compactness
-    fig.subplots_adjust(hspace=0.6)  # Increased vertical space between subplots
+    fig.subplots_adjust(hspace=0.6, bottom=0.04)  # Increased vertical space between subplots
     plt.show()
