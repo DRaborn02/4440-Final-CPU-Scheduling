@@ -2,7 +2,7 @@ from Process import Process
 
 def priority_scheduling(processes):
     # Sort processes by arrival time, then by priority (lower number = higher priority)
-    processes.sort(key=lambda p: (p.arrival_time, p.priority))
+    # processes.sort(key=lambda p: (p.arrival_time, p.priority))
     
     current_time = 0
     completed_processes = []

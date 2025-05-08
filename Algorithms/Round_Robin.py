@@ -8,7 +8,7 @@ def round_robin(processes, quantum):
     # track the arrival time and total quantum time
     time_taken = 0
     #sort the processes by arrival time in ascending order
-    sorted(processes, key = lambda process: process.arrival_time)
+    processes.sort(key=lambda process: process.arrival_time)
 
     arrival_idx = 0
     #check if there is process still have not arrival yet or if there is process still need to run
