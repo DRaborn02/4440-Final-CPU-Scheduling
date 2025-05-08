@@ -50,6 +50,7 @@ def sjrf(proc):
         if remaining_time[i] == 0:
             current_process = proc[i]
             current_process.completion_time = current_time
+            current_process.start_time =  current_process.completion_time - current_process.burst_time
             current_process.turn_around_time = current_process.completion_time - current_process.arrival_time  # Turnaround = Completion - Arrival
             current_process.waiting_time = current_process.turn_around_time - current_process.burst_time  # Waiting = Turnaround - Burst
             completed_processes.append(current_process)  # Keep track of completed processes
